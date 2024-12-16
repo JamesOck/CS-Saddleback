@@ -1,7 +1,7 @@
 import datetime
 from data_utils import load_students, load_courses, load_registrations, save_registrations
 
-
+# Function to greet the user based on the current time of day
 def greet_user(student_name):
     """
     Greet the user based on the current time of day.
@@ -16,7 +16,7 @@ def greet_user(student_name):
         greeting = "Good Evening"
     print(f"{greeting} {student_name.title()}, what would you like to do today?")
 
-
+# Function to display the main menu options
 def display_menu():
     """
     Display the main menu options.
@@ -31,7 +31,7 @@ def display_menu():
     exit     - End session
     """)
 
-
+# Function to list all courses sorted by ticket number or course code
 def list_courses(courses):
     """
     List all courses sorted by ticket number or course code.
@@ -55,7 +55,7 @@ def list_courses(courses):
             f"{course['ticket']:7} {course['code']:9} {course['course_name'][:45]:45} {course['units']:5} {course['day']:6} {course['time']:14} {course['instructor']:15}")
     print(f"{len(courses)} Courses")
 
-
+# Function to display detailed information for a specific course
 def course_detail(courses, registrations):
     """
     Display detailed information for a specific course.
@@ -83,7 +83,7 @@ def course_detail(courses, registrations):
             f"{reg['student_id']:13} {students[reg['student_id']]['last_name']:16} {students[reg['student_id']]['first_name']:11}")
     print(f"Total Students Registered: {len(enrolled_students)}")
 
-
+# Function to display information for the logged-in student
 def student_info(student_id, registrations, courses):
     """
     Display information for the logged-in student.
@@ -109,7 +109,7 @@ def student_info(student_id, registrations, courses):
                 f"{course['ticket']:7} {course['code']:9} {course['course_name'][:45]:45} {course['units']:5} {course['day']:6} {course['time']:14} {course['instructor']:15}")
     print(f"{len(student_courses)} Course(s) Registered                                  Units:   {total_units}")
 
-
+# Function to register the logged-in student for a course
 def register_course(student_id, registrations, courses):
     """
     Register the logged-in student for a course.
@@ -121,6 +121,7 @@ def register_course(student_id, registrations, courses):
     if ticket_number.lower() == 'exit':
         return
 
+    # Check if the student is already registered for the course
     if any(reg['ticket_no'] == ticket_number and reg['student_id'] == student_id for reg in registrations):
         print(f"{student_id} is already registered in {ticket_number}")
         return
@@ -130,6 +131,7 @@ def register_course(student_id, registrations, courses):
         print(f"{ticket_number} not found")
         return
 
+    # Check if total units will exceed the limit of 12
     student_courses = [reg for reg in registrations if reg['student_id'] == student_id]
     total_units = sum(
         float(course['units']) for reg in student_courses for course in courses if course['ticket'] == reg['ticket_no'])
@@ -142,11 +144,12 @@ def register_course(student_id, registrations, courses):
         print(f"{ticket_number} is full.")
         return
 
+    # Register the student for the course
     registrations.append({'student_id': student_id, 'ticket_no': ticket_number})
     save_registrations(registrations)
     print(f"{student_id} was added to {ticket_number}")
 
-
+# Function to drop a course for the logged-in student
 def drop_course(student_id, registrations):
     """
     Drop a course for the logged-in student.
@@ -167,7 +170,7 @@ def drop_course(student_id, registrations):
     save_registrations(registrations)
     print(f"{student_id} was dropped from {ticket_number}")
 
-
+# Main function to run the Saddleback College Registration application
 def main():
     """
     Main function to run the Saddleback College Registration application.
@@ -210,7 +213,6 @@ def main():
                     print("Invalid selection, please try again.")
         else:
             print("Student ID not found, please try again.")
-
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 include "librarystorage.h"
 #include "item.h"
+#include "additem.h"
 
 int main() {
     try {

@@ -1,1 +1,1 @@
-C++ Assignments taken at Saddleback College
+C++ Programming assignments while at Saddleback College
